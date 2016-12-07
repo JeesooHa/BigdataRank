@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -70,14 +68,12 @@ public class HousePrices {
 		Threshold.put(69,Thr_3SsnPorch);
 		Threshold.put(70,Thr_ScreenPorch);
 		Threshold.put(71,Thr_PoolArea);
-		Threshold.put(75,Thr_MiscVal);
-		
+		Threshold.put(75,Thr_MiscVal);		
 		//System.out.println(Threshold.entrySet());	
 	}
 
 	public String PriceSet(String s){
-		int price = Integer.parseInt(s);
-		
+		int price = Integer.parseInt(s);	
 
 		return price_condition.condition(price);
 	}
@@ -122,7 +118,7 @@ public class HousePrices {
 						else entries[i] = "Yes";
 					}
 					
-					//11 case of price
+					//case of price
 					if(i == 80){		
 						entries[i] = PriceSet(entries[i]);
 					}
@@ -192,6 +188,12 @@ public class HousePrices {
 					
 					HashMap<String, Integer> tmp = new HashMap<String, Integer>();
 					
+					if(Threshold.containsKey(i)){	//Numeric data
+						if(entries[i].equalsIgnoreCase("NA")) entries[i] = "No";
+						else if(Integer.parseInt(entries[i]) < Threshold.get(i))	entries[i] = "No";
+						else entries[i] = "Yes";
+					}
+					
 					if(A.get(i).get(entries[i]) == null){
 						tmp = (HashMap<String, Integer>) A.get(i).clone();
 						tmp.put(entries[i], num_attribute[i]++);
@@ -201,11 +203,6 @@ public class HousePrices {
 				}//for
 						
 				for(int i = 0; i<entries.length; i++){
-					if(Threshold.containsKey(i)){	//Numeric data
-						if(entries[i].equalsIgnoreCase("NA")) entries[i] = -1+"";
-						if(Integer.parseInt(entries[i]) < Threshold.get(i))	entries[i] = "No";
-						else entries[i] = "Yes";
-					}
 					if(A.get(i).containsKey(entries[i])){
 						attributes.add(new DiscreteAttribute(attrMap.get(i),A.get(i).get(entries[i])));
 					}
@@ -308,11 +305,24 @@ public class HousePrices {
 			//System.out.print("r name : "+r.getAttributes().get(r.getAttributes().size()-1).getName());
 			//System.out.print("r value : "+r.getAttributes().get(r.getAttributes().size()-1).getValue());
 			
+			/* save
 			for(String s : A.get(80).keySet()){				
-				//System.out.println((int)root.getResult());
 				if(A.get(80).get(s) == (int)r.getAttributes().get(r.getAttributes().size()-1).getValue())	
 					result.add(r.getAttributes().get(0).getValue()+","+s);
 			}
+			*/
+
+			for(String s : A.get(80).keySet()){				
+				if(A.get(80).get(s) == (int)root.getResult()){
+					result.add(r.getAttributes().get(0).getValue()+","+s);
+					return;
+				}
+			}
+			//not found -test		
+			result.add(r.getAttributes().get(0).getValue()+","+0);
+
+
+			//System.out.println(root.getResult());	
 			
 			/*
 			if(root.getResult() == r.getAttributes().get(r.getAttributes().size()-1).getValue()) {
@@ -333,17 +343,19 @@ public class HousePrices {
 		String path = HousePrices.class.getResource("").getPath();	
 		String train_file = path+"train.csv";
 		String test_file = path+"test.csv";
-		String result_file = path+"result.csv";
-		
+
 		HousePrices hp = new HousePrices();
 		hp.Initialize();
-		ArrayList<Record> train_records = hp.GetTrainData(train_file);
-		
-		//hp.printTrain();
+		ArrayList<Record> train_records = hp.GetTrainData(train_file);		
 		//hp.printArrayInfo(train_records);
 		ArrayList<Record> test_records = hp.GetTestData(test_file);
 		//hp.printArrayInfo(test_records);
 		
+		//result of train
+		//hp.printTrain();
+		
+		//System.out.println(A.get(80).entrySet());
+		//System.out.println(A.get(80).size());
 		LearningSet learningSet = new LearningSet();
 		
 		Node root = new Node();
@@ -355,17 +367,17 @@ public class HousePrices {
 		
 		Tree t = new Tree();
 		t.buildTree(train_records, root, learningSet);
-		System.out.println(test_records.size());
+		
 		for(int x = 0; x < test_records.size();x++){
 			//test_records.get(x).printRecord();
 			traverseTree(test_records.get(x), root);
 		}
-		//System.out.println(result.size());
-		/*
+		
+		//print result		
 		for(int i = 0; i < result.size(); i++)
 			System.out.println(result.get(i));
-			*/
-		
+			
+		System.out.println("data size : "+result.size());	//1459
 		hp.SaveResult();
 	}
 

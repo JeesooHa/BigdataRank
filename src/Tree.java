@@ -15,13 +15,8 @@ public class Tree {
 		
 		//System.out.println(	result[0]+"		"+result[1]);
 		root.setEntropy(result[0]);
-	
-		if(root.getEntropy() == 0) {
-			if(result[1] != -1){
-				root.setResult(result[1]);
-			}
-			return root;	
-		}
+		root.setResult(result[1]);
+		
 		
 		for(int i = 1; i < HousePrices.NUM_ATTRS - 1; i++) {
 			
@@ -42,7 +37,7 @@ public class Tree {
 				
 				double gain = Entropy.calculateGain(root.getEntropy(), entropies, setSizes, root.getData().size());
 				
-				if(gain >= bestGain) {
+				if(gain > bestGain) {
 					bestAttribute = i;
 					bestGain = gain;
 				}
