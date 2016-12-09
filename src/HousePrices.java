@@ -320,12 +320,10 @@ public class HousePrices {
 		String path = HousePrices.class.getResource("").getPath();	
 		String train_file = path+"train.csv";
 		String test_file = path+"test.csv";
-<<<<<<< HEAD
+
 		String result_file = path+"result.csv";
 		String test_result_file = path+"output_for_check.csv";
-=======
 
->>>>>>> 9de1af3ed7b942e9f1269b6e5e8bc49332a31e6d
 		HousePrices hp = new HousePrices();
 		hp.Initialize();
 		ArrayList<Record> train_records = hp.GetTrainData(train_file);		
@@ -422,11 +420,15 @@ public class HousePrices {
 			sum = 0;
 			for(int i = 0; i< Set2.length-1; i++)
 			{
-				error = Set[i]-Double.parseDouble(Set2[i+1][1]);
+				
+				error = Math.log(Set[i])-Math.log(Double.parseDouble(Set2[i+1][1]));
 				//error = Double.parseDouble(Set_test[i+1][1])-Double.parseDouble(Set2[i+1][1]);
 				sum += error*error;
 			}
-			rmse = Math.sqrt(sum/Set2.length-1);
+			
+			double numData = (double)(Set2.length-1);
+			//System.out.println("last error : "+error + " " + sum+ " "+ numData);
+			rmse = Math.sqrt(sum/numData);
 			System.out.println("present result : "+rmse);
 			//System.out.println("improved");
 		} catch (FileNotFoundException e) {
