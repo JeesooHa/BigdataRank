@@ -1,10 +1,10 @@
 
 public class price_condition 
 {
-	static String s;
-	
 	public static String condition(int price)
-	{
+	{	
+		String s;
+		
 		if(price<35000) s = 33750+"";
 		else if(price<37500) s = 36250+"";
 		else if(price<40000) s = 38750+"";
@@ -291,6 +291,8 @@ public class price_condition
 		else if(price<742500) s = 741250+"";
 		else if(price<745000) s = 743750+"";
 		else if(price<747500) s = 746250+"";
+		else s = 755000+"";
+		
 		return s;
 	}
 }

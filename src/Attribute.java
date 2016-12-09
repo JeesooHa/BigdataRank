@@ -21,7 +21,6 @@ abstract public class Attribute {
 			this.value = -1;
 			this.isUnknown = true;
 		}
-
 	}
 	
 	public void setName(String name) {

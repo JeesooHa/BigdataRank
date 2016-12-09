@@ -20,7 +20,6 @@ public class Entropy {
 			int count = 0;
 			for(int j = 0; j < data.size(); j++) {
 				Record record = data.get(j);
-							
 				if(record.getAttributes().get(record.getAttributes().size()-1).getValue() == i) {	
 					count++;
 				}
