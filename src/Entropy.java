@@ -24,7 +24,7 @@ public class Entropy {
 					count++;
 				}
 			}
-			if(m_c <= count){	//priority result
+			if(m_c < count){	//priority result
 				m_i = i;
 				m_c = count;
 			}

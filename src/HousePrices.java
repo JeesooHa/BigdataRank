@@ -71,13 +71,6 @@ public class HousePrices {
 		Threshold.put(75,Thr_MiscVal);		
 		//System.out.println(Threshold.entrySet());	
 	}
-
-	public String PriceSet(String s){
-		int price = Integer.parseInt(s);	
-
-		return price_condition.condition(price);
-	}
-	
 	
 	public ArrayList<Record> GetTrainData(String adds){
 
@@ -119,8 +112,9 @@ public class HousePrices {
 					}
 					
 					//case of price
-					if(i == 80){		
-						entries[i] = PriceSet(entries[i]);
+					if(i == 80){	
+						int price = Integer.parseInt(entries[i]);	
+						entries[i] = price_condition.condition(price);
 					}
 
 					if(A.size()<NUM_ATTRS){ //initial add
@@ -136,14 +130,12 @@ public class HousePrices {
 					
 				}//for
 				
-
 				for(int i = 0; i<entries.length; i++){	
-						attributes.add(new DiscreteAttribute(attrMap.get(i),A.get(i).get(entries[i])));
+						attributes.add(new DiscreteAttribute(attrMap.get(i), A.get(i).get(entries[i])));
 				}//for
 				
 				r.setAttributes(attributes);
-				records.add(r);	 
-				
+				records.add(r);	 			
 				line = inputStream.readLine();
 			}		
 			
@@ -204,13 +196,12 @@ public class HousePrices {
 						
 				for(int i = 0; i<entries.length; i++){
 					if(A.get(i).containsKey(entries[i])){
-						attributes.add(new DiscreteAttribute(attrMap.get(i),A.get(i).get(entries[i])));
+						attributes.add(new DiscreteAttribute(attrMap.get(i), A.get(i).get(entries[i])));
 					}
 				}//for
 				
 				r.setAttributes(attributes);
-				records.add(r);	 
-				
+				records.add(r);	 			
 				line = inputStream.readLine();
 			}		
 			
@@ -300,38 +291,22 @@ public class HousePrices {
 			}
 		}
 			
-		if(root.children == null){
-			//System.out.println("root name : " + root.getTestAttribute().getName() + "	root value : "+root.getTestAttribute().getValue());
-			//System.out.print("r name : "+r.getAttributes().get(r.getAttributes().size()-1).getName());
-			//System.out.print("r value : "+r.getAttributes().get(r.getAttributes().size()-1).getValue());
-			
-			/* save
-			for(String s : A.get(80).keySet()){				
-				if(A.get(80).get(s) == (int)r.getAttributes().get(r.getAttributes().size()-1).getValue())	
-					result.add(r.getAttributes().get(0).getValue()+","+s);
-			}
-			*/
-
+		if(root.children == null){								
 			for(String s : A.get(80).keySet()){				
 				if(A.get(80).get(s) == (int)root.getResult()){
 					result.add(r.getAttributes().get(0).getValue()+","+s);
 					return;
 				}
 			}
-			//not found -test		
-			result.add(r.getAttributes().get(0).getValue()+","+0);
-
-
-			//System.out.println(root.getResult());	
+			//not found - default		
+			for(String s : A.get(80).keySet()){							
+				result.add(r.getAttributes().get(0).getValue()+","+s);
+				//System.out.println(r.getAttributes().get(0).getValue()+" "+root.getResult());	
+				//System.out.println(root.getEntropy());	
+				break;				
+			}
 			
-			/*
-			if(root.getResult() == r.getAttributes().get(r.getAttributes().size()-1).getValue()) {
-				System.out.println(root.getResult());				
-			}	*/
-			//System.out.println(r.getAttributes().get(r.getAttributes().size()-1).getValue());
-			//result.add(r.getAttributes().get(0).getValue()+","+A.get(80).get(root.getResult()));
-			
-			//System.out.println();
+
 		}
 		
 		return;

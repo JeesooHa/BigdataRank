@@ -1,21 +1,10 @@
 
 public class price_condition 
 {
-	static String s;
-	
 	public static String condition(int price)
-	{
-		int start = 30000;
-		long end = 800000;
-		s = start+"";
-		int tem = 100;
-		for(long set = start; set < end; set += 100){
-			if(price > set){
-				s = (price-tem)+"";
-				break;
-			}
-		}
-		/*
+	{	
+		String s;
+		
 		if(price<35000) s = 33750+"";
 		else if(price<37500) s = 36250+"";
 		else if(price<40000) s = 38750+"";
@@ -304,7 +293,6 @@ public class price_condition
 		else if(price<747500) s = 746250+"";
 		else s = 755000+"";
 		
-		*/
 		return s;
 	}
 }
