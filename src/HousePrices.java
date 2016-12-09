@@ -2,17 +2,19 @@
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class HousePrices {
 	public static final int NUM_ATTRS = 81;
 	public static int[] num_attribute = new int[NUM_ATTRS];
-	
+	public static double[] Set = new double[1460];
 	//////////////////////////////////
 	//data #0~80
 	//Numeric Data Threshold(feet data) - median value
@@ -247,7 +249,7 @@ public class HousePrices {
 				
 				int id = (int)Double.parseDouble(at[0])+1;
 				double gnt = Double.parseDouble(at[1]);
-				
+				Set[i] = gnt;
 				outputStream.write(id+","+gnt);
 				outputStream.newLine();
 			}
@@ -334,7 +336,7 @@ public class HousePrices {
 		String train_file = path+"train.csv";
 		String test_file = path+"test.csv";
 		String result_file = path+"result.csv";
-		
+		String test_result_file = path+"output_for_check.csv";
 		HousePrices hp = new HousePrices();
 		hp.Initialize();
 		ArrayList<Record> train_records = hp.GetTrainData(train_file);
@@ -367,6 +369,77 @@ public class HousePrices {
 			*/
 		
 		hp.SaveResult();
+		calc_RMSE();
 	}
-
+	public static void calc_RMSE() 
+	{
+		
+		try 
+		{
+			String[][] Set2 = new String[1460][2];
+			String[][] Set_test = new String[1460][2];
+		
+			//System.out.println("size of save "+save.length);
+			int count = 0;
+			String GetLine = new String();
+			Scanner check;
+			/*check = new Scanner(new File("result(2).csv"));
+			count = 0;
+			while(check.hasNext())
+			{
+	
+				
+				
+				GetLine = check.nextLine();
+				Set_test[count] = GetLine.split(",");	
+				
+				count++;
+				
+	
+			}*/
+			
+			
+			check = new Scanner(new File("output_for_check.csv"));
+			count = 0;
+			while(check.hasNext())
+			{
+	
+				
+				
+				GetLine = check.nextLine();
+				Set2[count] = GetLine.split(",");	
+				
+				count++;
+				
+	
+			}
+			check.close();
+			double error = 0;
+			
+			double sum = 0;
+			double rmse = 0;
+			/*for(int i = 0; i< Set2.length-1; i++)
+			{
+				//error = Set[i]-Double.parseDouble(Set2[i+1][1]);
+				error = Double.parseDouble(Set_test[i+1][1])-Double.parseDouble(Set2[i+1][1]);
+				sum += error*error;
+			}
+			
+			rmse = Math.sqrt(sum/Set2.length-1);
+			System.out.println("previous result : "+rmse);*/
+			sum = 0;
+			for(int i = 0; i< Set2.length-1; i++)
+			{
+				error = Set[i]-Double.parseDouble(Set2[i+1][1]);
+				//error = Double.parseDouble(Set_test[i+1][1])-Double.parseDouble(Set2[i+1][1]);
+				sum += error*error;
+			}
+			rmse = Math.sqrt(sum/Set2.length-1);
+			System.out.println("present result : "+rmse);
+			//System.out.println("improved");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
