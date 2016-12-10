@@ -48,8 +48,7 @@ public class HousePrices {
 	static HashMap<Integer, Integer> Threshold = new HashMap<Integer, Integer>();
 	static ArrayList<HashMap<String, Integer>> A = new ArrayList<HashMap<String, Integer>>();
 	
-	public void Initialize(){		
-		//Threshold add	
+	public void Initialize(){		//Nemeric data - Threshold add	
 		Threshold.put(3,Thr_LotFrontage);
 		Threshold.put(4,Thr_LotArea);		
 		Threshold.put(26,Thr_MasVnrArea);	
@@ -118,8 +117,8 @@ public class HousePrices {
 						int price = Integer.parseInt(entries[i]);	
 						entries[i] = price_condition.condition(price);
 					}
-
-					if(A.size()<NUM_ATTRS){ //initial add
+					
+					if(A.size()<NUM_ATTRS){ 	//initial add
 						tmp.put(entries[i], num_attribute[i]++);
 						A.add(i, tmp);
 					}else{
@@ -133,7 +132,7 @@ public class HousePrices {
 				}//for
 				
 				for(int i = 0; i<entries.length; i++){	
-						attributes.add(new DiscreteAttribute(attrMap.get(i), A.get(i).get(entries[i])));
+					attributes.add(new DiscreteAttribute(attrMap.get(i), A.get(i).get(entries[i])));
 				}//for
 				
 				r.setAttributes(attributes);
@@ -222,8 +221,7 @@ public class HousePrices {
 			record.get(i).printRecord();
 		}
 	}
-	
-	
+		
 	public void SaveResult(){
 		String path = HousePrices.class.getResource("").getPath();	
 		BufferedWriter outputStream = null;
@@ -247,22 +245,19 @@ public class HousePrices {
 	        System.exit(1);
 	    }	 
 		
-		System.out.println("data saved");
-		
+		System.out.println("data saved");		
 	}//initialize
-	
-	
+		
 	public void printTrain(){		
 		System.out.println("=========== Train set =============");		
 		for(int i = 0; i < NUM_ATTRS ; i++){	
 			System.out.print(attrMap.get(i)+" : ");
-			System.out.println(A.get(i).entrySet());
+			System.out.println(A.get(i).keySet());
+			//System.out.println(A.get(i).entrySet());
 		}
 	}
 	
-
-	public static String getLeafNames(int attributeNum, int valueNum) {
-		
+	public static String getLeafNames(int attributeNum, int valueNum) {		
 		for(String s : A.get(attributeNum).keySet())
 			if(A.get(attributeNum).get(s) == valueNum)
 				return s;
@@ -300,15 +295,18 @@ public class HousePrices {
 					return;
 				}
 			}
+			//r.printRecord();
+			//System.out.println(r.getAttributes().get(0).getValue());
+			//System.out.println(root.getEntropy()+" "+root.getResult());		
+			//result.add(r.getAttributes().get(0).getValue()+","+1);
+			/*
 			//not found - default		
 			for(String s : A.get(80).keySet()){							
 				result.add(r.getAttributes().get(0).getValue()+","+s);
 				//System.out.println(r.getAttributes().get(0).getValue()+" "+root.getResult());	
 				//System.out.println(root.getEntropy());	
 				break;				
-			}
-			
-
+			}*/
 		}
 		
 		return;
@@ -333,9 +331,7 @@ public class HousePrices {
 		
 		//result of train
 		//hp.printTrain();
-		
-		//System.out.println(A.get(80).entrySet());
-		//System.out.println(A.get(80).size());
+	
 		LearningSet learningSet = new LearningSet();
 		
 		Node root = new Node();
@@ -352,20 +348,18 @@ public class HousePrices {
 			//test_records.get(x).printRecord();
 			traverseTree(test_records.get(x), root);
 		}
-		
+		/*
 		//print result		
 		for(int i = 0; i < result.size(); i++)
 			System.out.println(result.get(i));
-			
+		*/	
 		System.out.println("data size : "+result.size());	//1459
 		hp.SaveResult();
 		calc_RMSE();
 	}
-	public static void calc_RMSE() 
-	{
-		
-		try 
-		{
+	
+	public static void calc_RMSE() {	
+		try {
 			String[][] Set2 = new String[1460][2];
 			String[][] Set_test = new String[1460][2];
 		
@@ -373,66 +367,31 @@ public class HousePrices {
 			int count = 0;
 			String GetLine = new String();
 			Scanner check;
-			/*check = new Scanner(new File("result(2).csv"));
-			count = 0;
-			while(check.hasNext())
-			{
-	
-				
-				
-				GetLine = check.nextLine();
-				Set_test[count] = GetLine.split(",");	
-				
-				count++;
-				
-	
-			}*/
-			
-			
+		
 			check = new Scanner(new File("output_for_check.csv"));
 			count = 0;
-			while(check.hasNext())
-			{
-	
-				
-				
+			
+			while(check.hasNext()){	
 				GetLine = check.nextLine();
-				Set2[count] = GetLine.split(",");	
-				
+				Set2[count] = GetLine.split(",");				
 				count++;
-				
-	
 			}
 			check.close();
-			double error = 0;
 			
+			double error = 0;		
 			double sum = 0;
 			double rmse = 0;
-			/*for(int i = 0; i< Set2.length-1; i++)
-			{
-				//error = Set[i]-Double.parseDouble(Set2[i+1][1]);
-				error = Double.parseDouble(Set_test[i+1][1])-Double.parseDouble(Set2[i+1][1]);
-				sum += error*error;
-			}
-			
-			rmse = Math.sqrt(sum/Set2.length-1);
-			System.out.println("previous result : "+rmse);*/
+
 			sum = 0;
-			for(int i = 0; i< Set2.length-1; i++)
-			{
-				
+			for(int i = 0; i< Set2.length-1; i++){			
 				error = Math.log(Set[i])-Math.log(Double.parseDouble(Set2[i+1][1]));
-				//error = Double.parseDouble(Set_test[i+1][1])-Double.parseDouble(Set2[i+1][1]);
 				sum += error*error;
 			}
 			
 			double numData = (double)(Set2.length-1);
-			//System.out.println("last error : "+error + " " + sum+ " "+ numData);
 			rmse = Math.sqrt(sum/numData);
 			System.out.println("present result : "+rmse);
-			//System.out.println("improved");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -1,8 +1,7 @@
 
-public class price_condition 
-{
-	public static String condition(int price)
-	{	
+public class price_condition {
+	public static String condition(int price){	
+	
 		String s;
 		
 		if(price<35000) s = 33750+"";

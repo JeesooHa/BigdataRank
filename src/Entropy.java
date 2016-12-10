@@ -6,15 +6,16 @@ public class Entropy {
 	public static double[] calculateEntropy(ArrayList<Record> data) {
 		double[] result = new double[2]; 
 		double	entropy = 0;
-
-		int m_i = -1;
-		int m_c = 0;
 		
-		if(data.size() == 0) {	
+		int m_c = 0;
+		int m_i = -1;
+		
+		if(data.size() == 0) {	//noting to do
 			result[0] = 0;
 			result[1] = -1;
 			return result;
 		}
+		
 		//System.out.println(HousePrices.setSize(80));		
 		for(int i = 0; i < HousePrices.setSize(80); i++) {
 			int count = 0;

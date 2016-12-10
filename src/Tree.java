@@ -10,13 +10,19 @@ public class Tree {
 		double bestGain = 0;
 		
 		double[] result = new double[2];
-		result[0] = Entropy.calculateEntropy(root.getData())[0];
-		result[1] = Entropy.calculateEntropy(root.getData())[1];
-		
-		//System.out.println(	result[0]+"		"+result[1]);
-		//if(root.getEntropy() == 0) {	return root;	}
+		result = Entropy.calculateEntropy(root.getData());
+
+		if(result[1] == -1){ //no data
+			result[1] = root.getParent().getResult();		
+		}
 		root.setEntropy(result[0]);
-		root.setResult(result[1]);		
+		root.setResult(result[1]);	
+
+		if(root.getEntropy() == 0) {	
+			//System.out.println(	result[0]+"		"+result[1]);
+			return root;	
+		}
+
 			
 		for(int i = 1; i < HousePrices.NUM_ATTRS - 1; i++) {
 			
