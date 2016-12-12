@@ -16,6 +16,7 @@ public class HousePrices {
 	//////////////////////////////////
 	//data #0~80
 	//Numeric Data Threshold(feet data) - median value
+	/*
 	static int Thr_LotFrontage = 88;	//#3 NA => -1
 	static int Thr_LotArea = 10625;		//#4
 	
@@ -39,7 +40,31 @@ public class HousePrices {
 	static int Thr_ScreenPorch = 189;	//#70	
 	static int Thr_PoolArea = 519;		//#71
 	static int Thr_MiscVal = 620;		//#75
-	static int price_init = 35000;
+	static int price_init = 35000;*/
+	
+	static int Thr_LotFrontage = 60;	//#3 NA => -1
+	static int Thr_LotArea = 7200;		//#4
+	static int Thr_MasVnrArea = 1;		//#26 NA => -1
+	
+	static int Thr_BsmtFinSF1 = 1; 		//#34
+	static int Thr_BsmtFinSF2 = 315; 	//#36
+	static int Thr_BsmtUnfSF = 1400;	//#37
+	static int Thr_TotalBsmtSF = 1;		//#38
+	
+	static int Thr_1stFlrSF = 865;		//#43
+	static int Thr_2ndFlrSF  = 1;		//#44
+	static int Thr_LowQualFinSF  = 1;	//#45
+	static int Thr_GrLivArea = 865;		//#46
+
+	static int Thr_GarageArea = 1;		//#62
+	static int Thr_WoodDeckSF = 1;		//#66
+	static int Thr_OpenPorchSF = 116;	//#67
+	static int Thr_EnclosedPorch = 145;	//#68
+	static int Thr_3SsnPorch = 180;		//#69
+	static int Thr_ScreenPorch = 185; 	//#70	
+	static int Thr_PoolArea = 450;		//#71
+	static int Thr_MiscVal = 4550;		//#75	
+	
 	//////////////////////////////////////
 	
 	public static ArrayList<String> result = new ArrayList<String>();
@@ -48,7 +73,7 @@ public class HousePrices {
 	static HashMap<Integer, Integer> Threshold = new HashMap<Integer, Integer>();
 	static ArrayList<HashMap<String, Integer>> A = new ArrayList<HashMap<String, Integer>>();
 	
-	public void Initialize(){		//Nemeric data - Threshold add	
+	public void Initialize(){		//Numeric data - Threshold add	
 		Threshold.put(3,Thr_LotFrontage);
 		Threshold.put(4,Thr_LotArea);		
 		Threshold.put(26,Thr_MasVnrArea);	
@@ -223,7 +248,6 @@ public class HousePrices {
 	}
 		
 	public void SaveResult(){
-		String path = HousePrices.class.getResource("").getPath();	
 		BufferedWriter outputStream = null;
 		try{
 			outputStream = new BufferedWriter(new FileWriter("result.csv"));
@@ -275,14 +299,11 @@ public class HousePrices {
 
 	public static void traverseTree(Record r, Node root) {
 		//System.out.println(root.getTestAttribute().getName());
-	    //System.out.println(root.children.length);
 		int nodeValue = 0;
 
-		for(int i = 0; i < r.getAttributes().size(); i++) {	
-			//System.out.println(r.getAttributes().get(i).getName() +"	"+r.getAttributes().get(i).getValue());
+		for(int i = 0; i < r.getAttributes().size(); i++) {				
 			if(r.getAttributes().get(i).getName().equalsIgnoreCase(root.getTestAttribute().getName())) {
 				nodeValue = (int)r.getAttributes().get(i).getValue();
-				//System.out.println( r.getAttributes().get(i).getName() +"	"+r.getAttributes().get(i).getValue());
 				traverseTree(r, root.children[nodeValue]);	
 				break;
 			}
@@ -307,8 +328,7 @@ public class HousePrices {
 				//System.out.println(root.getEntropy());	
 				break;				
 			}*/
-		}
-		
+		}	
 		return;
 	}
 	
@@ -318,9 +338,6 @@ public class HousePrices {
 		String path = HousePrices.class.getResource("").getPath();	
 		String train_file = path+"train.csv";
 		String test_file = path+"test.csv";
-
-		String result_file = path+"result.csv";
-		String test_result_file = path+"output_for_check.csv";
 
 		HousePrices hp = new HousePrices();
 		hp.Initialize();
