@@ -16,25 +16,59 @@ public class Entropy {
 			return result;
 		}
 		
-		//System.out.println(HousePrices.setSize(80));		
-		for(int i = 0; i < HousePrices.setSize(80); i++) {
-			int count = 0;
-			for(int j = 0; j < data.size(); j++) {
-				Record record = data.get(j);
-				if(record.getAttributes().get(record.getAttributes().size()-1).getValue() == i) {	
-					count++;
+		
+			//System.out.println(HousePrices.setSize(80));		
+			for(int i = 0; i < HousePrices.setSize(80); i++) {
+				int count = 0;
+				for(int j = 0; j < data.size(); j++) {
+					Record record = data.get(j);
+				/*	if(record.isnumeic == true)
+					{
+						
+							for(Integer attri : HousePrices.Threshold.keySet()){
+								for(String val : HousePrices.A.get(attri).keySet()){
+									int count1 = 0;
+									int coun
+									for(int k = 0; k< data.size(); k++)
+									{
+										String tmp ="";
+										for(String s : HousePrices.A.get(attri).keySet())
+											if(HousePrices.A.get(attri).get(s) == record.getAttributes().get(attri).getValue())
+												tmp = s;
+
+										if(Integer.parseInt(tmp) <Integer.parseInt(val) )
+										{
+											
+										}
+										else if(Integer.parseInt(tmp)  >=Integer.parseInt(val) )
+										{
+											
+										}
+									}
+									
+									
+								}
+							}
+						
+					}
+					else
+					{*/
+						if(record.getAttributes().get(record.getAttributes().size()-1).getValue() == i) {	
+							count++;
+						}
+					//}
+				}
+				if(m_c < count){	//priority result
+					m_i = i;
+					m_c = count;
+				}
+			
+				double probability = count / (double)data.size();
+				if(count > 0) {
+					entropy += -probability * (Math.log(probability) / Math.log(2));	
 				}
 			}
-			if(m_c < count){	//priority result
-				m_i = i;
-				m_c = count;
-			}
 		
-			double probability = count / (double)data.size();
-			if(count > 0) {
-				entropy += -probability * (Math.log(probability) / Math.log(2));	
-			}
-		}
 		
 		result[0] = entropy;
 		result[1] = m_i;

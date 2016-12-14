@@ -132,9 +132,13 @@ public class HousePrices {
 					HashMap<String, Integer> tmp = new HashMap<String, Integer>();
 					
 					if(Threshold.containsKey(i)){	//Numeric data
-						if(entries[i].equalsIgnoreCase("NA")) entries[i] = "No";
-						else if(Integer.parseInt(entries[i]) < Threshold.get(i))	entries[i] = "No";
-						else entries[i] = "Yes";
+						if(entries[i].equalsIgnoreCase("NA")) entries[i] = "0";
+						/*else if(Integer.parseInt(entries[i]) < Threshold.get(i))	entries[i] = "No";
+							
+						else entries[i] = "Yes";*/
+						
+						//r.isnumeic = true;
+						
 					}
 					
 					//case of price
@@ -157,6 +161,7 @@ public class HousePrices {
 				}//for
 				
 				for(int i = 0; i<entries.length; i++){	
+					///TODO: if numerical attributes are not sorting, sort
 					attributes.add(new DiscreteAttribute(attrMap.get(i), A.get(i).get(entries[i])));
 				}//for
 				
@@ -207,9 +212,9 @@ public class HousePrices {
 					HashMap<String, Integer> tmp = new HashMap<String, Integer>();
 					
 					if(Threshold.containsKey(i)){	//Numeric data
-						if(entries[i].equalsIgnoreCase("NA")) entries[i] = "No";
-						else if(Integer.parseInt(entries[i]) < Threshold.get(i))	entries[i] = "No";
-						else entries[i] = "Yes";
+						if(entries[i].equalsIgnoreCase("NA")) entries[i] = "0";
+						//else if(Integer.parseInt(entries[i]) < Threshold.get(i))	entries[i] = "No";
+						//else entries[i] = "Yes";
 					}
 					
 					if(A.get(i).get(entries[i]) == null){
@@ -338,6 +343,8 @@ public class HousePrices {
 		String path = HousePrices.class.getResource("").getPath();	
 		String train_file = path+"train.csv";
 		String test_file = path+"test.csv";
+		
+		System.out.println("START");
 
 		HousePrices hp = new HousePrices();
 		hp.Initialize();
@@ -348,6 +355,8 @@ public class HousePrices {
 		
 		//result of train
 		//hp.printTrain();
+		
+		System.out.println("ADD INFO DONE");
 	
 		LearningSet learningSet = new LearningSet();
 		
@@ -358,8 +367,13 @@ public class HousePrices {
 			//record.printRecord();
 		}
 		
+		System.out.println("Train START");
+		
 		Tree t = new Tree();
 		t.buildTree(train_records, root, learningSet);
+		
+
+		System.out.println("Train END");
 		
 		for(int x = 0; x < test_records.size();x++){
 			//test_records.get(x).printRecord();

@@ -3,6 +3,7 @@
 import java.util.*;
 
 public class Record {
+	boolean isnumeic = false;
 	private ArrayList<DiscreteAttribute> attributes;
 
 	public ArrayList<DiscreteAttribute> getAttributes() {
@@ -13,6 +14,9 @@ public class Record {
 		this.attributes = attributes;
 	}
 	
+	public void IsNumeric(boolean isnumeic) {
+		this.isnumeic = isnumeic;
+	}
 	public void printRecord(){
 		for(int j = 0; j < attributes.size(); j++){
 			System.out.print(attributes.get(j).getName()+" : "+attributes.get(j).getValue()+"	");
